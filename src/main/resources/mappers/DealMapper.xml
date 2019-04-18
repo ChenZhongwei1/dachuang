@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wust.dao.DealMapper" >
+  <resultMap id="BaseResultMap" type="com.wust.model.Deal" >
+    <constructor >
+      <idArg column="userid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="dealid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="deal_amount" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="method" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="after_wallet" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="dealtime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userid, dealid, deal_amount, method, after_wallet, dealtime
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.wust.model.DealKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from deal
+    where userid = #{userid,jdbcType=INTEGER}
+      and dealid = #{dealid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAllDeal" resultMap="BaseResultMap" parameterType="com.wust.model.DealKey" >
+    select
+    <include refid="Base_Column_List" />
+    from deal
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.wust.model.DealKey" >
+    delete from deal
+    where userid = #{userid,jdbcType=INTEGER}
+      and dealid = #{dealid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wust.model.Deal" >
+    insert into deal (userid, dealid, deal_amount, 
+      method, after_wallet, dealtime
+      )
+    values (#{userid,jdbcType=INTEGER}, #{dealid,jdbcType=INTEGER}, #{dealAmount,jdbcType=INTEGER}, 
+      #{method,jdbcType=VARCHAR}, #{afterWallet,jdbcType=INTEGER}, #{dealtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wust.model.Deal" >
+    insert into deal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="dealid != null" >
+        dealid,
+      </if>
+      <if test="dealAmount != null" >
+        deal_amount,
+      </if>
+      <if test="method != null" >
+        method,
+      </if>
+      <if test="afterWallet != null" >
+        after_wallet,
+      </if>
+      <if test="dealtime != null" >
+        dealtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="dealid != null" >
+        #{dealid,jdbcType=INTEGER},
+      </if>
+      <if test="dealAmount != null" >
+        #{dealAmount,jdbcType=INTEGER},
+      </if>
+      <if test="method != null" >
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="afterWallet != null" >
+        #{afterWallet,jdbcType=INTEGER},
+      </if>
+      <if test="dealtime != null" >
+        #{dealtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wust.model.Deal" >
+    update deal
+    <set >
+      <if test="dealAmount != null" >
+        deal_amount = #{dealAmount,jdbcType=INTEGER},
+      </if>
+      <if test="method != null" >
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="afterWallet != null" >
+        after_wallet = #{afterWallet,jdbcType=INTEGER},
+      </if>
+      <if test="dealtime != null" >
+        dealtime = #{dealtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=INTEGER}
+      and dealid = #{dealid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wust.model.Deal" >
+    update deal
+    set deal_amount = #{dealAmount,jdbcType=INTEGER},
+      method = #{method,jdbcType=VARCHAR},
+      after_wallet = #{afterWallet,jdbcType=INTEGER},
+      dealtime = #{dealtime,jdbcType=TIMESTAMP}
+    where userid = #{userid,jdbcType=INTEGER}
+      and dealid = #{dealid,jdbcType=INTEGER}
+  </update>
+</mapper>

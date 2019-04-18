@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wust.dao.ContentMapper" >
+  <resultMap id="BaseResultMap" type="com.wust.model.Content" >
+    <constructor >
+      <idArg column="contentid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="para_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wust.model.Content" >
+    <constructor >
+      <idArg column="contentid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="para_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="para_con" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    contentid, para_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    para_con
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.wust.model.ContentKey" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from content
+    where contentid = #{contentid,jdbcType=INTEGER}
+      and para_id = #{paraId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAllContent" resultMap="ResultMapWithBLOBs" parameterType="com.wust.model.ContentKey" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from content
+    where contentid = #{contentid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.wust.model.ContentKey" >
+    delete from content
+    where contentid = #{contentid,jdbcType=INTEGER}
+      and para_id = #{paraId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wust.model.Content" >
+    insert into content (contentid, para_id, para_con
+      )
+    values (#{contentid,jdbcType=INTEGER}, #{paraId,jdbcType=INTEGER}, #{paraCon,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wust.model.Content" >
+    insert into content
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contentid != null" >
+        contentid,
+      </if>
+      <if test="paraId != null" >
+        para_id,
+      </if>
+      <if test="paraCon != null" >
+        para_con,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contentid != null" >
+        #{contentid,jdbcType=INTEGER},
+      </if>
+      <if test="paraId != null" >
+        #{paraId,jdbcType=INTEGER},
+      </if>
+      <if test="paraCon != null" >
+        #{paraCon,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wust.model.Content" >
+    update content
+    <set >
+      <if test="paraCon != null" >
+        para_con = #{paraCon,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where contentid = #{contentid,jdbcType=INTEGER}
+      and para_id = #{paraId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wust.model.Content" >
+    update content
+    set para_con = #{paraCon,jdbcType=LONGVARCHAR}
+    where contentid = #{contentid,jdbcType=INTEGER}
+      and para_id = #{paraId,jdbcType=INTEGER}
+  </update>
+</mapper>
