@@ -1,15 +1,17 @@
-package com.wust.serviceimpl;
+package com.wust.service.impl;
 
 import com.wust.dao.CollectionsMapper;
 import com.wust.model.Collections;
 import com.wust.model.CollectionsKey;
 import com.wust.service.CollectionsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
+@Service("CollectionsService")
 public class CollectionsImpl implements CollectionsService {
-    @Resource
+    @Autowired
     CollectionsMapper collectionsmapper;
 
     @Override

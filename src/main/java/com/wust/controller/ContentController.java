@@ -6,62 +6,64 @@ import com.wust.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/Content")
 public class ContentController {
     @Autowired
     private ContentService contentService;
-    @Autowired
-    private HttpServletRequest request;
 
-    @RequestMapping("/")
-    public String index(){
-        return "/index";
+    @RequestMapping(value = "/deleteByPrimaryKey",method = RequestMethod.GET)
+    public boolean deleteByPrimaryKey(@RequestParam("contentid")@Valid String contentId,
+                                     @RequestParam("paraid")@Valid String paraId){
+        Integer contentid=Integer.parseInt(contentId);
+        Integer paraid=Integer.parseInt(paraId);
+        boolean flag=contentService.deleteByPrimaryKey(contentid,paraid);
+        return flag;
     }
 
-    @RequestMapping("/deleteByPrimaryKey")
-    public String deleteByPrimaryKey(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        Integer paraid=Integer.parseInt(request.getParameter("paraid"));
-        contentService.deleteByPrimaryKey(contentid,paraid);
-        return "/index";
-    }
-
-    @RequestMapping("/insert")
-    public String insert(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        Integer paraid=Integer.parseInt(request.getParameter("paraid"));
-        String paracon=request.getParameter("paracon");
+    @RequestMapping(value = "/insert",method = RequestMethod.GET)
+    public boolean insert(@RequestParam("contentid")@Valid String contentId,
+                         @RequestParam("paraid")@Valid String paraId,
+                         @RequestParam("paracon")@Valid String paraCon){
+        Integer contentid=Integer.parseInt(contentId);
+        Integer paraid=Integer.parseInt(paraId);
+        String paracon=paraCon;
         Content content=new Content(contentid,paraid,paracon);
-        contentService.insert(content);
-        return "/index";
+        boolean flag=contentService.insert(content);
+        return flag;
     }
 
-    @RequestMapping("/selectSingle")
-    public String selectSingle(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        Integer paraid=Integer.parseInt(request.getParameter("paraid"));
-        contentService.selectSingle(contentid,paraid);
-        return "/index";
+    @RequestMapping(value = "/selectSingle",method = RequestMethod.GET)
+    public Content selectSingle(@RequestParam("contentid")@Valid String contentId,
+                               @RequestParam("paraid")@Valid String paraId){
+        Integer contentid=Integer.parseInt(contentId);
+        Integer paraid=Integer.parseInt(paraId);
+        Content content=contentService.selectSingle(contentid,paraid);
+        return content;
     }
 
-    @RequestMapping("/selectAllContent")
-    public String selectAllContent(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        contentService.selectAllContent(contentid);
-        return "/index";
+    @RequestMapping(value = "/selectAllContent",method = RequestMethod.GET)
+    public List<Content> selectAllContent(@RequestParam("contentid")@Valid String contentId){
+        Integer contentid=Integer.parseInt(contentId);
+        List<Content> list=contentService.selectAllContent(contentid);
+        return list;
     }
 
-    @RequestMapping("/update")
-    public String update(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        Integer paraid=Integer.parseInt(request.getParameter("paraid"));
-        String paracon=request.getParameter("paracon");
+    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    public boolean update(@RequestParam("contentid")@Valid String contentId,
+                         @RequestParam("paraid")@Valid String paraId,
+                         @RequestParam("paracon")@Valid String paraCon){
+        Integer contentid=Integer.parseInt(contentId);
+        Integer paraid=Integer.parseInt(paraId);
+        String paracon=paraCon;
         Content content=new Content(contentid,paraid,paracon);
-        contentService.update(content);
-        return "/index";
+        boolean flag=contentService.update(content);
+        return flag;
     }
 }

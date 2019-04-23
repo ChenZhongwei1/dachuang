@@ -6,64 +6,70 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/Collections")
 public class CollectionsController {
     @Autowired
     private CollectionsService collectionsService;
-    @Autowired
-    private HttpServletRequest request;
 
-    @RequestMapping("/")
-    public String index(){
-        return "/index";
+
+
+    @RequestMapping(value = "/deleteByPrimaryKey",method =RequestMethod.GET)
+    public boolean deleteByPrimaryKey(@RequestParam("userid")@Valid String userId,
+                                      @RequestParam("collectionid")@Valid String collectionId){
+        Integer userid=Integer.parseInt(userId);
+        Integer collectionid=Integer.parseInt(collectionId);
+        boolean flag=collectionsService.deleteByPrimaryKey(userid,collectionid);
+        return flag;
     }
 
-    @RequestMapping("/deleteByPrimaryKey")
-    public String deleteByPrimaryKey(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        Integer collectionid=Integer.parseInt(request.getParameter("collectionid"));
-        collectionsService.deleteByPrimaryKey(userid,collectionid);
-        return "/index";
-    }
-
-    @RequestMapping("/insert")
-    public String insert(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        Integer collectionid=Integer.parseInt(request.getParameter("collectionid"));
-        Integer moduleid=Integer.parseInt(request.getParameter("moduleid"));
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
+    @RequestMapping(value = "/insert",method = RequestMethod.GET)
+    public boolean insert(@RequestParam("userid")@Valid String userId,
+                          @RequestParam("collectionid")@Valid String collectionId,
+                          @RequestParam("moduleid")@Valid String moduleId,
+                          @RequestParam("contentid")@Valid String contentId){
+        Integer userid=Integer.parseInt(userId);
+        Integer collectionid=Integer.parseInt(collectionId);
+        Integer moduleid=Integer.parseInt(moduleId);
+        Integer contentid=Integer.parseInt(contentId);
         Collections collections=new Collections(userid,collectionid,moduleid,contentid);
-        collectionsService.insert(collections);
-        return "/index";
+        boolean flag=collectionsService.insert(collections);
+        return flag;
     }
 
-    @RequestMapping("/selectSingle")
-    public String selectSingle(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        Integer collectionid=Integer.parseInt(request.getParameter("collectionid"));
-        collectionsService.selectSingle(userid,collectionid);
-        return "/index";
+    @RequestMapping(value = "/selectSingle",method = RequestMethod.GET)
+    public Collections selectSingle(@RequestParam("userid")@Valid String userId,
+                               @RequestParam("collectionid")@Valid String collectionId){
+        Integer userid=Integer.parseInt(userId);
+        Integer collectionid=Integer.parseInt(collectionId);
+        Collections collections=collectionsService.selectSingle(userid,collectionid);
+        return collections;
     }
 
-    @RequestMapping("/selectAllCollections")
-    public String selectAllCollections(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        collectionsService.selectAllCollections(userid);
-        return "/index";
+    @RequestMapping(value = "/selectAllCollections",method = RequestMethod.GET)
+    public List<Collections> selectAllCollections(@RequestParam("userid")@Valid String userId){
+        Integer userid=Integer.parseInt(userId);
+        List<Collections> list=collectionsService.selectAllCollections(userid);
+        return list;
     }
 
-    @RequestMapping("/update")
-    public String update(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        Integer collectionid=Integer.parseInt(request.getParameter("collectionid"));
-        Integer moduleid=Integer.parseInt(request.getParameter("moduleid"));
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
+    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    public boolean update(@RequestParam("userid")@Valid String userId,
+                         @RequestParam("collectionid")@Valid String collectionId,
+                         @RequestParam("moduleid")@Valid String moduleId,
+                         @RequestParam("contentid")@Valid String contentId){
+        Integer userid=Integer.parseInt(userId);
+        Integer collectionid=Integer.parseInt(collectionId);
+        Integer moduleid=Integer.parseInt(moduleId);
+        Integer contentid=Integer.parseInt(contentId);
         Collections collections=new Collections(userid,collectionid,moduleid,contentid);
-        collectionsService.update(collections);
-        return "/index";
+        boolean flag=collectionsService.update(collections);
+        return flag;
     }
 }

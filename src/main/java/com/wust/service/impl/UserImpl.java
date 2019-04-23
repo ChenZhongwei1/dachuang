@@ -1,15 +1,19 @@
-package com.wust.serviceimpl;
+package com.wust.service.impl;
 
 import com.wust.dao.UserMapper;
 import com.wust.model.User;
 import com.wust.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+
+@Service("UserService")
 public class UserImpl implements UserService {
 
-    @Resource
+    @Autowired
     UserMapper usermapper;
 
     @Override

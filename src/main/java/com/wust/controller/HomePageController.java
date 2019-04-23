@@ -5,70 +5,76 @@ import com.wust.service.HomePageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/HomePage")
 public class HomePageController {
     @Autowired
     private HomePageService homePageService;
-    @Autowired
-    private HttpServletRequest request;
 
-    @RequestMapping("/")
-    public String index(){
-        return "/index";
+
+    @RequestMapping(value = "/deleteByContentid",method = RequestMethod.GET)
+    public boolean deleteByContentid(@RequestParam("contentid")@Valid String contentId){
+        Integer contentid=Integer.parseInt(contentId);
+        boolean flag=homePageService.deleteByContentid(contentid);
+        return flag;
     }
 
-    @RequestMapping("/deleteByContentid")
-    public String deleteByContentid(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        homePageService.deleteByContentid(contentid);
-        return "/index";
-    }
-
-    @RequestMapping("/insert")
-    public String insert(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        String title=request.getParameter("title");
-        String summary=request.getParameter("summary");
-        String picture=request.getParameter("picture");
-        Integer paraNum=Integer.parseInt(request.getParameter("paraNum"));
+    @RequestMapping(value = "/insert",method = RequestMethod.GET)
+    public boolean insert(@RequestParam("contentid")@Valid String contentId,
+                         @RequestParam("title")@Valid String Title,
+                         @RequestParam("summary")@Valid String Summary,
+                         @RequestParam("picture")@Valid String Picture,
+                         @RequestParam("paraNum")@Valid String paranum){
+        Integer contentid=Integer.parseInt(contentId);
+        String title=Title;
+        String summary=Summary;
+        String picture=Picture;
+        Integer paraNum=Integer.parseInt(paranum);
         HomePage homePage=new HomePage(contentid,title,summary,picture,paraNum);
-        homePageService.insert(homePage);
-        return "/index";
+        boolean flag=homePageService.insert(homePage);
+        return flag;
     }
 
-    @RequestMapping("/selectByContentid")
-    public String selectByContentid(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        homePageService.selectByContentid(contentid);
-        return "/index";
+    @RequestMapping(value = "/selectByContentid",method = RequestMethod.GET)
+    public HomePage selectByContentid(@RequestParam("contentid")@Valid String contentId){
+        Integer contentid=Integer.parseInt(contentId);
+        HomePage homePage=homePageService.selectByContentid(contentid);
+        return homePage;
     }
 
-    @RequestMapping("/selectByTitle")
-    public String selectByTitle(){
-        String title=request.getParameter("title");
-        homePageService.selectByTitle(title);
-        return "/index";
+    @RequestMapping(value = "/selectByTitle",method = RequestMethod.GET)
+    public List<HomePage> selectByTitle(@RequestParam("title")@Valid String Title){
+        String title=Title;
+        List<HomePage> lsit=homePageService.selectByTitle(title);
+        return lsit;
     }
 
-    @RequestMapping("/selectAllHomePage")
-    public String selectAllHomePage(){
-        homePageService.selectAllHomePage();
-        return "/index";
+    @RequestMapping(value = "/selectAllHomePage",method = RequestMethod.GET)
+    public List<HomePage> selectAllHomePage(){
+        List<HomePage> list=homePageService.selectAllHomePage();
+        return list;
     }
 
-    @RequestMapping("/update")
-    public String update(){
-        Integer contentid=Integer.parseInt(request.getParameter("contentid"));
-        String title=request.getParameter("title");
-        String summary=request.getParameter("summary");
-        String picture=request.getParameter("picture");
-        Integer paraNum=Integer.parseInt(request.getParameter("paraNum"));
+    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    public boolean update(@RequestParam("contentid")@Valid String contentId,
+                         @RequestParam("title")@Valid String Title,
+                         @RequestParam("summary")@Valid String Summary,
+                         @RequestParam("picture")@Valid String Picture,
+                         @RequestParam("paraNum")@Valid String paranum){
+        Integer contentid=Integer.parseInt(contentId);
+        String title=Title;
+        String summary=Summary;
+        String picture=Picture;
+        Integer paraNum=Integer.parseInt(paranum);
         HomePage homePage=new HomePage(contentid,title,summary,picture,paraNum);
-        homePageService.update(homePage);
-        return "/index";
+        boolean flag=homePageService.update(homePage);
+        return flag;
     }
 }

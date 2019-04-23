@@ -5,69 +5,75 @@ import com.wust.service.DealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/Deal")
 public class DealController {
     @Autowired
     private DealService dealService;
-    @Autowired
-    private HttpServletRequest request;
 
-    @RequestMapping("/")
-    public String index(){
-        return "/index";
+    @RequestMapping(value = "/deleteByPrimaryKey",method = RequestMethod.GET)
+    public boolean deleteByPrimaryKey(@RequestParam("userid")@Valid String userId,
+                                     @RequestParam("dealid")@Valid String dealId){
+        Integer userid=Integer.parseInt(userId);
+        Integer dealid=Integer.parseInt(dealId);
+        boolean flag=dealService.deleteByPrimaryKey(userid,dealid);
+        return flag;
     }
 
-    @RequestMapping("/deleteByPrimaryKey")
-    public String deleteByPrimaryKey(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        Integer dealid=Integer.parseInt(request.getParameter("dealid"));
-        dealService.deleteByPrimaryKey(userid,dealid);
-        return "/index";
-    }
-
-    @RequestMapping("/insert")
-    public String insert(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        Integer dealid=Integer.parseInt(request.getParameter("dealid"));
-        Integer dealAmount=Integer.parseInt(request.getParameter("dealAmount"));
-        String method=request.getParameter("method");
-        Integer afterWallet=Integer.parseInt(request.getParameter("afterWallet"));
+    @RequestMapping(value = "/insert",method = RequestMethod.GET)
+    public boolean insert(@RequestParam("userid")@Valid String userId,
+                         @RequestParam("dealid")@Valid String dealId,
+                         @RequestParam("dealAmount")@Valid String dealamount,
+                         @RequestParam("method")@Valid String Method,
+                         @RequestParam("afterWallet")@Valid String afterwallet){
+        Integer userid=Integer.parseInt(userId);
+        Integer dealid=Integer.parseInt(dealId);
+        Integer dealAmount=Integer.parseInt(dealamount);
+        String method=Method;
+        Integer afterWallet=Integer.parseInt(afterwallet);
         Date dealtime=new Date();
         Deal deal=new Deal(userid,dealid,dealAmount,method,afterWallet,dealtime);
-        dealService.insert(deal);
-        return "/index";
+        boolean flag=dealService.insert(deal);
+        return flag;
     }
 
-    @RequestMapping("/selectSingle")
-    public String selectSingle(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        Integer dealid=Integer.parseInt(request.getParameter("dealid"));
-        dealService.selectSingle(userid,dealid);
-        return "/index";
+    @RequestMapping(value = "/selectSingle",method = RequestMethod.GET)
+    public Deal selectSingle(@RequestParam("userid")@Valid String userId,
+                               @RequestParam("dealid")@Valid String dealId){
+        Integer userid=Integer.parseInt(userId);
+        Integer dealid=Integer.parseInt(dealId);
+        Deal deal=dealService.selectSingle(userid,dealid);
+        return deal;
     }
 
-    @RequestMapping("/selectAllDeal")
-    public String selectAllDeal(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        dealService.selectAllDeal(userid);
-        return "/index";
+    @RequestMapping(value = "/selectAllDeal",method = RequestMethod.GET)
+    public List<Deal> selectAllDeal(@RequestParam("userid")@Valid String userId){
+        Integer userid=Integer.parseInt(userId);
+        List<Deal> list=dealService.selectAllDeal(userid);
+        return list;
     }
 
-    @RequestMapping("/update")
-    public String update(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        Integer dealid=Integer.parseInt(request.getParameter("dealid"));
-        Integer dealAmount=Integer.parseInt(request.getParameter("dealAmount"));
-        String method=request.getParameter("method");
-        Integer afterWallet=Integer.parseInt(request.getParameter("afterWallet"));
+    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    public boolean update(@RequestParam("userid")@Valid String userId,
+                         @RequestParam("dealid")@Valid String dealId,
+                         @RequestParam("dealAmount")@Valid String dealamount,
+                         @RequestParam("method")@Valid String Method,
+                         @RequestParam("afterWallet")@Valid String afterwallet){
+        Integer userid=Integer.parseInt(userId);
+        Integer dealid=Integer.parseInt(dealId);
+        Integer dealAmount=Integer.parseInt(dealamount);
+        String method=Method;
+        Integer afterWallet=Integer.parseInt(afterwallet);
         Date dealtime=new Date();
         Deal deal=new Deal(userid,dealid,dealAmount,method,afterWallet,dealtime);
-        dealService.update(deal);
-        return "/index";
+        boolean flag=dealService.update(deal);
+        return flag;
     }
 }

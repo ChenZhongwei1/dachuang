@@ -5,80 +5,96 @@ import com.wust.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/User")
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private HttpServletRequest request;
 
-    @RequestMapping("/")
-    public String index(){
-        return "/index";
+
+    @RequestMapping(value = "/deleteByUserid",method = RequestMethod.GET)
+    public boolean deleteByUserid(@RequestParam("userid")@Valid String userId){
+        Integer userid=Integer.parseInt(userId);
+        boolean flag=userService.deleteByUserid(userid);
+        return flag;
     }
 
-    @RequestMapping("/deleteByUserid")
-    public String deleteByUserid(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        userService.deleteByUserid(userid);
-        return "/index";
-    }
-
-    @RequestMapping("/insert")
-    public String insert(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        String username=request.getParameter("username");
-        String sex=request.getParameter("sex");
-        String userimage=request.getParameter("userimage");
-        String phonenum=request.getParameter("phonenum");
-        String eMail=request.getParameter("eMail");
-        String address=request.getParameter("address");
-        Integer wallet=Integer.parseInt(request.getParameter("wallet"));
-        Integer myCollection=Integer.parseInt(request.getParameter("myCollection"));
-        String password=request.getParameter("password");
+    @RequestMapping(value = "/insert",method = RequestMethod.GET)
+    public boolean insert(@RequestParam("userid")@Valid String userId,
+                         @RequestParam("username")@Valid String userName,
+                          @RequestParam("sex")@Valid String Sex,
+                         @RequestParam("userimage")@Valid String userImage,
+                         @RequestParam("phonenum")@Valid String phoneNum,
+                         @RequestParam("eMail")@Valid String EMail,
+                         @RequestParam("address")@Valid String Address,
+                         @RequestParam("wallet")@Valid String Wallet,
+                         @RequestParam("myCollection")@Valid String mycollection,
+                         @RequestParam("password")@Valid String passWord){
+        Integer userid=Integer.parseInt(userId);
+        String username=userName;
+        String sex=Sex;
+        String userimage=userImage;
+        String phonenum=phoneNum;
+        String eMail=EMail;
+        String address=Address;
+        Integer wallet=Integer.parseInt(Wallet);
+        Integer myCollection=Integer.parseInt(mycollection);
+        String password=passWord;
         User user=new User(userid,username,sex,userimage,phonenum,eMail,address,wallet,myCollection,password);
-        userService.insert(user);
-        return "/index";
+        boolean flag=userService.insert(user);
+        return flag;
     }
 
-    @RequestMapping("/selectByUserid")
-    public String selectByUserid(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        userService.selectByUserid(userid);
-        return "/index";
+    @RequestMapping(value = "/selectByUserid",method = RequestMethod.GET)
+    public User selectByUserid(@RequestParam("userid")@Valid String userId){
+        Integer userid=Integer.parseInt(userId);
+        User user=userService.selectByUserid(userid);
+        return user;
     }
 
-    @RequestMapping("/selectByUsername")
-    public String selectByUsername(){
-        String username=request.getParameter("username");
-        userService.selectByUsername(username);
-        return "/index";
+    @RequestMapping(value = "/selectByUsername",method = RequestMethod.GET)
+    public List<User> selectByUsername(@RequestParam("username")@Valid String userName){
+        String username=userName;
+        List<User> list=userService.selectByUsername(username);
+        return list;
     }
 
-    @RequestMapping("/selectAllUser")
-    public String selectAllUser(){
-        userService.selectAllUser();
-        return "/index";
+    @RequestMapping(value = "/selectAllUser",method = RequestMethod.GET)
+    public List<User> selectAllUser(){
+        List<User> list=userService.selectAllUser();
+        return list;
     }
 
-    @RequestMapping("/update")
-    public String update(){
-        Integer userid=Integer.parseInt(request.getParameter("userid"));
-        String username=request.getParameter("username");
-        String sex=request.getParameter("sex");
-        String userimage=request.getParameter("userimage");
-        String phonenum=request.getParameter("phonenum");
-        String eMail=request.getParameter("eMail");
-        String address=request.getParameter("address");
-        Integer wallet=Integer.parseInt(request.getParameter("wallet"));
-        Integer myCollection=Integer.parseInt(request.getParameter("myCollection"));
-        String password=request.getParameter("password");
+    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    public boolean update(@RequestParam("userid")@Valid String userId,
+                         @RequestParam("username")@Valid String userName,
+                          @RequestParam("sex")@Valid String Sex,
+                         @RequestParam("userimage")@Valid String userImage,
+                         @RequestParam("phonenum")@Valid String phoneNum,
+                         @RequestParam("eMail")@Valid String EMail,
+                         @RequestParam("address")@Valid String Address,
+                         @RequestParam("wallet")@Valid String Wallet,
+                         @RequestParam("myCollection")@Valid String mycollection,
+                         @RequestParam("password")@Valid String passWord){
+        Integer userid=Integer.parseInt(userId);
+        String username=userName;
+        String sex=Sex;
+        String userimage=userImage;
+        String phonenum=phoneNum;
+        String eMail=EMail;
+        String address=Address;
+        Integer wallet=Integer.parseInt(Wallet);
+        Integer myCollection=Integer.parseInt(mycollection);
+        String password=passWord;
         User user=new User(userid,username,sex,userimage,phonenum,eMail,address,wallet,myCollection,password);
-        userService.update(user);
-        return "/index";
+        boolean flag=userService.update(user);
+        return flag;
     }
 }

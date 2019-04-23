@@ -1,7 +1,10 @@
 package com.wust.service;
 
 import com.wust.model.HomePage;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
+
 
 public interface HomePageService {
     boolean deleteByContentid(Integer contentid);

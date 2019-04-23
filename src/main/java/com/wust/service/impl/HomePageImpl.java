@@ -1,14 +1,17 @@
-package com.wust.serviceimpl;
+package com.wust.service.impl;
 
 import com.wust.dao.HomePageMapper;
 import com.wust.model.HomePage;
 import com.wust.service.HomePageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@Service("HomePageService")
 public class HomePageImpl implements HomePageService {
-    @Resource
+    @Autowired
     HomePageMapper homepagemapper;
 
     @Override

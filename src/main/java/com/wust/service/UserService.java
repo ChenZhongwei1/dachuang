@@ -1,7 +1,10 @@
 package com.wust.service;
 
 import com.wust.model.User;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
+
 
 public interface UserService {
     boolean deleteByUserid(Integer userid);

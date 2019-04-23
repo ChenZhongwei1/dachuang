@@ -1,15 +1,17 @@
-package com.wust.serviceimpl;
+package com.wust.service.impl;
 
 import com.wust.dao.DealMapper;
 import com.wust.model.Deal;
 import com.wust.model.DealKey;
 import com.wust.service.DealService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
+@Service("DealService")
 public class DealImpl implements DealService {
-    @Resource
+    @Autowired
     DealMapper dealmapper;
 
     @Override

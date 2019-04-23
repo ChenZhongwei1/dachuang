@@ -1,15 +1,17 @@
-package com.wust.serviceimpl;
+package com.wust.service.impl;
 
 import com.wust.dao.ContentMapper;
 import com.wust.model.Content;
 import com.wust.model.ContentKey;
 import com.wust.service.ContentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
+@Service("ContentService")
 public class ContentImpl implements ContentService {
-    @Resource
+    @Autowired
     ContentMapper contentmapper;
 
     @Override

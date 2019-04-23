@@ -22,11 +22,4 @@
     -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <bean id="CollectionsImpl" class="com.wust.serviceimpl.CollectionsImpl"></bean>
-    <bean id="ContentImpl" class="com.wust.serviceimpl.ContentImpl"></bean>
-    <bean id="DealImpl" class="com.wust.serviceimpl.DealImpl"></bean>
-    <bean id="HomePageImpl" class="com.wust.serviceimpl.HomePageImpl"></bean>
-    <bean id="UserImpl" class="com.wust.serviceimpl.UserImpl"></bean>
-
-
 </beans>

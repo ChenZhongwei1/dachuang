@@ -1,8 +1,10 @@
 package com.wust.service;
 
 import com.wust.model.Deal;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 public interface DealService {
     boolean deleteByPrimaryKey(Integer userid,Integer dealid);
