@@ -2,31 +2,36 @@ package com.wust.controller;
 
 import com.wust.model.User;
 import com.wust.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
 import java.util.List;
 
 
-@Controller
-@RequestMapping("/User")
+@RestController
+@EnableSwagger2
+@RequestMapping("api/User")
+@Api(value = "User",description = "用户表")
 public class UserController {
     @Autowired
     private UserService userService;
 
 
-    @RequestMapping(value = "/deleteByUserid",method = RequestMethod.GET)
+    @ApiOperation(value = "单个删除")
+    @PostMapping(value = "/deleteByUserid")
     public boolean deleteByUserid(@RequestParam("userid")@Valid String userId){
         Integer userid=Integer.parseInt(userId);
         boolean flag=userService.deleteByUserid(userid);
         return flag;
     }
 
-    @RequestMapping(value = "/insert",method = RequestMethod.GET)
+    @ApiOperation(value = "单个插入")
+    @PostMapping(value = "/insert")
     public boolean insert(@RequestParam("userid")@Valid String userId,
                          @RequestParam("username")@Valid String userName,
                           @RequestParam("sex")@Valid String Sex,
@@ -52,27 +57,31 @@ public class UserController {
         return flag;
     }
 
-    @RequestMapping(value = "/selectByUserid",method = RequestMethod.GET)
+    @ApiOperation(value = "ID查询")
+    @PostMapping(value = "/selectByUserid")
     public User selectByUserid(@RequestParam("userid")@Valid String userId){
         Integer userid=Integer.parseInt(userId);
         User user=userService.selectByUserid(userid);
         return user;
     }
 
-    @RequestMapping(value = "/selectByUsername",method = RequestMethod.GET)
+    @ApiOperation(value = "用户名查询")
+    @PostMapping(value = "/selectByUsername")
     public List<User> selectByUsername(@RequestParam("username")@Valid String userName){
         String username=userName;
         List<User> list=userService.selectByUsername(username);
         return list;
     }
 
-    @RequestMapping(value = "/selectAllUser",method = RequestMethod.GET)
+    @ApiOperation(value = "查询所有")
+    @PostMapping(value = "/selectAllUser")
     public List<User> selectAllUser(){
         List<User> list=userService.selectAllUser();
         return list;
     }
 
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    @ApiOperation(value = "更新")
+    @PostMapping(value = "/update")
     public boolean update(@RequestParam("userid")@Valid String userId,
                          @RequestParam("username")@Valid String userName,
                           @RequestParam("sex")@Valid String Sex,
