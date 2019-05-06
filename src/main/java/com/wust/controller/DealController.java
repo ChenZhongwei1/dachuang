@@ -2,23 +2,27 @@ package com.wust.controller;
 
 import com.wust.model.Deal;
 import com.wust.service.DealService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
-@Controller
-@RequestMapping("/Deal")
+@RestController
+@EnableSwagger2
+@RequestMapping("api/Deal")
+@Api(value = "Deal",description = "用户充值表")
 public class DealController {
     @Autowired
     private DealService dealService;
 
-    @RequestMapping(value = "/deleteByPrimaryKey",method = RequestMethod.GET)
+    @ApiOperation(value ="单个删除")
+    @PostMapping(value ="/deleteByPrimaryKey")
     public boolean deleteByPrimaryKey(@RequestParam("userid")@Valid String userId,
                                      @RequestParam("dealid")@Valid String dealId){
         Integer userid=Integer.parseInt(userId);
@@ -27,7 +31,8 @@ public class DealController {
         return flag;
     }
 
-    @RequestMapping(value = "/insert",method = RequestMethod.GET)
+    @ApiOperation(value ="单个插入")
+    @PostMapping(value ="/insert")
     public boolean insert(@RequestParam("userid")@Valid String userId,
                          @RequestParam("dealid")@Valid String dealId,
                          @RequestParam("dealAmount")@Valid String dealamount,
@@ -44,7 +49,8 @@ public class DealController {
         return flag;
     }
 
-    @RequestMapping(value = "/selectSingle",method = RequestMethod.GET)
+    @ApiOperation(value ="单个查询")
+    @PostMapping(value ="/selectSingle")
     public Deal selectSingle(@RequestParam("userid")@Valid String userId,
                                @RequestParam("dealid")@Valid String dealId){
         Integer userid=Integer.parseInt(userId);
@@ -53,14 +59,16 @@ public class DealController {
         return deal;
     }
 
-    @RequestMapping(value = "/selectAllDeal",method = RequestMethod.GET)
+    @ApiOperation("查询所有")
+    @PostMapping(value = "/selectAllDeal")
     public List<Deal> selectAllDeal(@RequestParam("userid")@Valid String userId){
         Integer userid=Integer.parseInt(userId);
         List<Deal> list=dealService.selectAllDeal(userid);
         return list;
     }
 
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    @ApiOperation("更新")
+    @PostMapping(value = "/update")
     public boolean update(@RequestParam("userid")@Valid String userId,
                          @RequestParam("dealid")@Valid String dealId,
                          @RequestParam("dealAmount")@Valid String dealamount,

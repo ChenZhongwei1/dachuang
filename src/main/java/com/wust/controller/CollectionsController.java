@@ -2,25 +2,28 @@ package com.wust.controller;
 
 import com.wust.model.Collections;
 import com.wust.service.CollectionsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
-@RequestMapping("/Collections")
+@RestController
+@EnableSwagger2
+@RequestMapping("api/Collections")
+@Api(value = "Collections",description = "用户收藏表")
 public class CollectionsController {
     @Autowired
     private CollectionsService collectionsService;
 
 
-
-    @RequestMapping(value = "/deleteByPrimaryKey",method =RequestMethod.GET)
+    @ApiOperation(value ="单个删除")
+    @PostMapping(value ="/deleteByPrimaryKey")
     public boolean deleteByPrimaryKey(@RequestParam("userid")@Valid String userId,
                                       @RequestParam("collectionid")@Valid String collectionId){
         Integer userid=Integer.parseInt(userId);
@@ -29,7 +32,8 @@ public class CollectionsController {
         return flag;
     }
 
-    @RequestMapping(value = "/insert",method = RequestMethod.GET)
+    @ApiOperation(value ="单个插入")
+    @PostMapping(value ="/insert")
     public boolean insert(@RequestParam("userid")@Valid String userId,
                           @RequestParam("collectionid")@Valid String collectionId,
                           @RequestParam("moduleid")@Valid String moduleId,
@@ -43,7 +47,8 @@ public class CollectionsController {
         return flag;
     }
 
-    @RequestMapping(value = "/selectSingle",method = RequestMethod.GET)
+    @ApiOperation(value ="单个查询")
+    @PostMapping(value ="/selectSingle")
     public Collections selectSingle(@RequestParam("userid")@Valid String userId,
                                @RequestParam("collectionid")@Valid String collectionId){
         Integer userid=Integer.parseInt(userId);
@@ -52,14 +57,16 @@ public class CollectionsController {
         return collections;
     }
 
-    @RequestMapping(value = "/selectAllCollections",method = RequestMethod.GET)
+    @ApiOperation(value ="查询所有")
+    @PostMapping(value ="/selectAllCollections")
     public List<Collections> selectAllCollections(@RequestParam("userid")@Valid String userId){
         Integer userid=Integer.parseInt(userId);
         List<Collections> list=collectionsService.selectAllCollections(userid);
         return list;
     }
 
-    @RequestMapping(value = "/update",method = RequestMethod.GET)
+    @ApiOperation(value ="更新")
+    @PostMapping(value ="/update")
     public boolean update(@RequestParam("userid")@Valid String userId,
                          @RequestParam("collectionid")@Valid String collectionId,
                          @RequestParam("moduleid")@Valid String moduleId,
